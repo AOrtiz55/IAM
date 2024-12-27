@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate IAM Role</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Activate IAM Role</h1>
+    <button id="activateBtn">Activate</button>
+    <p id="response"></p>
+
+    <script>
+        document.getElementById('activateBtn').addEventListener('click', () => {
+            // Call the backend to create the IAM role
+            fetch('http://127.0.0.1:5000/activate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the response in the UI
+                    const responseElement = document.getElementById('response');
+                    if (data.message) {
+                        responseElement.textContent = data.message;
+                        responseElement.style.color = "green";
+                    } else {
+                        responseElement.textContent = `Error: ${data.error}`;
+                        responseElement.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('response').textContent = `Error: ${error}`;
+                    document.getElementById('response').style.color = "red";
+                });
+        });
+    </script>
+</body>
+</html>
